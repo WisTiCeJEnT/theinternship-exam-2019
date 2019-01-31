@@ -4,8 +4,9 @@ RAW_XML = ([i.strip() for i in open("weather.xml").read().split('\n')[1:]])
 def toDict(rtext):
     if(rtext[0]!=''):
         ans = {}
-        print("rtext",rtext[0])
+        #print("rtext",rtext[0])
         if('=' in rtext[0][:rtext[0].index('>')]):#have inner
+            #print("Have inner")
             inner = str(rtext[0][rtext[0].index(' ')+1:rtext[0].index(f'>')])
             if(inner[-1]=='/'):
                 inner = inner[:-2]
@@ -25,17 +26,22 @@ def toDict(rtext):
 
         if("/" not in rtext[0]):
             i = 1
+            tmp = {}
             while(rtext[i]!=f"</{ckey}>"):
-                #print(ans,rtext[i],f"</{ckey}>")
+                #print(rtext[i],f"</{ckey}>")
                 #print(json.dumps(ans,indent=4, separators=(',', ': ')), rtext[i],f"</{ckey}>")
                 #input()
                 subans = toDict(rtext[i:])
-                if(subans!=None):
+                if(subans!=None and subans[0] not in tmp.keys() and subans[0][1:] not in ans.keys()):
                     ans[subans[0]] = subans[1]
+                    tmp = subans[1]
+                    #print(len(subans[1]))
                 i+=1
         #print(ckey)
         #print(rtext[:rtext.index(f'</{ckey}>')])
         #print(rtext[:rtext.index(f'>')])
+        if(ans == {}):
+            ans = {ckey:rtext[0][rtext[0].index('>')+1:]}#[rtext[0].index('>'+1):rtext[0].index('<',2)]}
         return[ckey,ans]
-print()
+#print(toDict(RAW_XML)[1])
 print(json.dumps(toDict(RAW_XML)[1],indent=4, separators=(',', ': ')))
