@@ -6,7 +6,8 @@ try:
         os.system("clear")
         print('\n'+msg+'\n')
         print("Hint:",WORD[1])
-        print(count)
+        #print(count)
+        print('\n'+open(f"./data/{count}.hangmanbody").read()+'\n')
         print("Guessed alphabet ->",end=' ')
         for k in word_tbl.keys():
             if word_tbl[k] == 2:
@@ -45,7 +46,7 @@ try:
         else:
             word_tbl[c_char] = 0
     print_word(WORD[0], word_tbl)
-    while(count<=10):
+    while(count<5):
         guess = input("Guess: ").lower()
         if guess not in word_tbl.keys():
             print_count(count,"That not a alphabet")
@@ -63,10 +64,11 @@ try:
         if(print_word(WORD[0], word_tbl)==0):
             print("Gotcha~ you discover all the alphabet :)")
             break
-    if(count == 11):
-        print("Your hangman can't make it! Try again next time :(")
+    if(count == 5):
+        print("\nYour hangman can't make it! Try again next time :(")
 #except:
+except KeyboardInterrupt:
+    print("\nSomething want wrong? See you again next time :)")
 except Exception as e: 
-    print()
     print(e)
-    print("Something want wrong. Make sure you got the latest version from 'https://github.com/WisTiCeJEnT/theinternship-exam-2019'")
+    print("\nSomething want wrong. Make sure you got the latest version from 'https://github.com/WisTiCeJEnT/theinternship-exam-2019'")
