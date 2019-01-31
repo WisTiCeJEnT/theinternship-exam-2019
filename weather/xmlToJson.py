@@ -1,6 +1,15 @@
 import json
 
 RAW_XML = ([i.strip() for i in open("weather.xml").read().split('\n')[1:]])
+def lastCheck(jsn):
+    if(type(jsn)==type({})):
+        for i in jsn.keys():
+            if(len(jsn[i])==1 and type(jsn[i])==type({})):
+                if(i in jsn[i].keys()):
+                    jsn[i] = jsn[i][i][jsn[i][i].index('>')+1:jsn[i][i].index('<',2)]
+            lastCheck(jsn[i])
+        return jsn
+
 def toDict(rtext):
     if(rtext[0]!=''):
         ans = {}
@@ -41,7 +50,7 @@ def toDict(rtext):
         #print(rtext[:rtext.index(f'</{ckey}>')])
         #print(rtext[:rtext.index(f'>')])
         if(ans == {}):
-            ans = {ckey:rtext[0][rtext[0].index('>')+1:]}#[rtext[0].index('>'+1):rtext[0].index('<',2)]}
+            ans = {ckey:rtext[0]}
         return[ckey,ans]
 #print(toDict(RAW_XML)[1])
-print(json.dumps(toDict(RAW_XML)[1],indent=4, separators=(',', ': ')))
+print(json.dumps(lastCheck(toDict(RAW_XML)[1]),indent=4, separators=(',', ': ')))
