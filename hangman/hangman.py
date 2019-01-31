@@ -1,13 +1,24 @@
 import os
 import random
 
-def print_count(count,msg):
-    os.system("clear")
-    print(msg)
-    print("Hint:",WORD[1])
-    print(count)
-
 try:
+    def print_count(count,msg):
+        os.system("clear")
+        print(msg)
+        print("Hint:",WORD[1])
+        print(count)
+
+    def print_word(answer,wrd_tbl):
+        missing = 0
+        for c in answer:
+            if(wrd_tbl[c.lower()] == 2):
+                print(c,end='')
+            else:
+                missing += 1
+                print('_',end='')
+        print()
+        return missing
+
     WORD_CATAGORIES = [x[:-5] for x in os.listdir("./data/") if ".wpsv" in x]
     count = 0
     word_tbl = {}
@@ -22,26 +33,28 @@ try:
     print("Hint:",WORD[1])
     for i in range(26):
         c_char = chr(tmp+i)
-        if c_char in WORD[0]:
+        if c_char in WORD[0].lower():
             word_tbl[c_char] = 1
         else:
             word_tbl[c_char] = 0
     while(count<=10):
-        guess = input("Guess: ")
+        guess = input("Guess: ").lower()
         if guess not in word_tbl.keys():
             print_count(count,"That not a alphabet")
-            continue
             #raise IOError
+            continue
         if word_tbl[guess] == 2:
             print_count(count,"You already guess that ^^")
-            continue
         elif word_tbl[guess] == 0:
             count += 1
-            print_count(count, f"Wrong!! '{guess}' is not in your word")
+            print_count(count, f"Oh no!! '{guess}' is not in your word")
             word_tbl[guess] = 2
         else:
-            print_count(count, f"True!! '{guess}' is in your word")
+            print_count(count, f"Yeah!! '{guess}' is in your word")
             word_tbl[guess] = 2
+        if(print_word(WORD[0], word_tbl)==0):
+            print("Gotcha~ you discover all the alphabet :)")
+            break
 except:
     print()
-    print("See yaa")
+    print("Something want wrong. Make sure you got the latest version from 'https://github.com/WisTiCeJEnT/theinternship-exam-2019'")
