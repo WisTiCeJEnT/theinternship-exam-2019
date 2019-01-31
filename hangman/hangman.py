@@ -1,5 +1,6 @@
 import os
 import random
+import math
 
 try:
     def print_count(count,msg):
@@ -16,16 +17,18 @@ try:
 
     def print_word(answer,wrd_tbl):
         missing = 0
+        filled = 0
         for c in answer:
             if(c==' '):
                 print(' ',end='')
             elif(wrd_tbl[c.lower()] == 2):
                 print(c,end='')
+                filled += 1
             else:
                 missing += 1
                 print('_',end='')
         print()
-        return missing
+        return [missing,filled]
 
     WORD_CATAGORIES = [x[:-5] for x in os.listdir("./data/") if ".wpsv" in x]
     count = 0
@@ -61,12 +64,18 @@ try:
         else:
             word_tbl[guess] = 2
             print_count(count, f"Yeah!! '{guess}' is in your word")
-        if(print_word(WORD[0], word_tbl)==0):
-            print("Gotcha~ you discover all the alphabet :)")
+        score = print_word(WORD[0], word_tbl)
+        print(f"Score: {math.floor(score[1]/(score[0]+score[1])*100)}/100")
+        if(score[0]==0):
+            print("\nGotcha~ you discover all the alphabet :)")
             break
     if(count == 5):
         print("\nYour hangman can't make it! Try again next time :(")
 #except:
+except ValueError:
+    print("\nPlease type the number '1' or '2' only.")
+except IndexError:
+    print("\nPlease select in a range of number.")
 except KeyboardInterrupt:
     print("\nSomething want wrong? See you again next time :)")
 except Exception as e: 
