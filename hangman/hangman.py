@@ -65,7 +65,8 @@ try:
             word_tbl[guess] = 2
             print_count(count, f"Yeah!! '{guess}' is in your word")
         score = print_word(WORD[0], word_tbl)
-        print(f"Score: {math.floor(score[1]/(score[0]+score[1])*100)}/100")
+        print()
+        print("Score: {}/100".format(math.floor(score[1]/(score[0]+score[1])*100)))
         if(score[0]==0):
             print("\nGotcha~ you discover all the alphabet :)")
             break
